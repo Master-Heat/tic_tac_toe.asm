@@ -5,13 +5,12 @@ TITLE Test1
     
     .data
     ;these three variable for drawing values of the squares
-    x_index db ?
-    x_start db ?
-    x_end db ?
+    
+    x_start dw ?
+    x_end dw ?
 
-    y_index db ?
-    y_start db ?
-    y_end db ?
+    y_start dw ?
+    y_end dw ?
     
 
 
@@ -43,7 +42,7 @@ TITLE Test1
 
     ; draw the grid 
     mov ah , 0ch
-    mov al , 25
+    mov al , 26
     ; draw the first column
     mov cx ,101
     mov dx,0    
@@ -109,6 +108,67 @@ TITLE Test1
     cmp dx , 135
 
     jl draw_pixel_in_second_raw
+    
+    
+    
+    
+       ;draw an the X
+    mov al , 4
+    mov x_start,22
+    mov y_start,2
+    mov bx,x_start
+    ;mov x_index,bx
+    mov bx,y_start
+    ;mov y_index,bx
+    
+    mov bx,x_start
+    mov x_end,bx
+    add x_end , 7
+
+    mov bx,y_start
+    mov y_end,bx
+    add y_end ,58
+
+    ;draw a row of pixels for first line
+    mov cx , x_start
+     mov dx, y_start
+    draw_pixel_line_line1:
+        int 10h
+        inc cx
+        mov bx,x_end
+        cmp cx,bx
+        jle draw_pixel_line_line1
+     
+    inc x_start
+    mov cx,x_start
+    inc x_end
+    inc dx
+    
+    mov bx,y_end
+    cmp dx,bx
+    jle draw_pixel_line_line1
+
+
+      ;draw a row of pixels for second line
+      mov cx,x_start
+     sub dx,58
+ draw_pixel_line_line2:
+        int 10h
+        inc cx
+        mov bx,x_end
+        cmp cx,bx
+        jle draw_pixel_line_line2
+     
+    dec x_start
+    mov cx,x_start
+    dec x_end
+    inc dx
+    
+    mov bx,y_end
+    cmp dx,bx
+    jle draw_pixel_line_line2
+
+    
 
 
     
